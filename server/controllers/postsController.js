@@ -1,4 +1,5 @@
 const { validationResult } = require('express-validator');
+const mongoose = require('mongoose');
 const Post = require('../models/Post');
 
 // @desc    Get all posts
@@ -151,16 +152,23 @@ const toggleLike = async (req, res, next) => {
     }
 
     const userId = req.user.id;
-    const userObjectId = post.constructor.db.Types.ObjectId.isValid(userId) ? userId : null;
 
-    const hasLiked = post.likedBy?.some((id) => id.toString() === String(userId));
-    if (hasLiked) {
-      post.likedBy = post.likedBy.filter((id) => id.toString() !== String(userId));
-      post.likesCount = Math.max(0, (post.likesCount || 0) - 1);
-    } else {
-      if (userObjectId) post.likedBy.push(userId);
-      post.likesCount = (post.likesCount || 0) + 1;
+    // Ensure userId is a valid ObjectId before proceeding
+    if (!mongoose.Types.ObjectId.isValid(userId)) {
+      return res.status(400).json({ success: false, message: 'Invalid user ID' });
     }
+
+    const hasLiked = post.likedBy.some((id) => id.toString() === userId);
+
+    if (hasLiked) {
+      // Unlike the post
+      post.likedBy = post.likedBy.filter((id) => id.toString() !== userId);
+    } else {
+      // Like the post
+      post.likedBy.push(userId);
+    }
+
+    post.likesCount = post.likedBy.length;
     await post.save();
 
     res.status(200).json({ success: true, data: { likesCount: post.likesCount, liked: !hasLiked } });
