@@ -26,8 +26,16 @@ export const deletePost = async (id) => {
 };
 
 export const toggleLikePost = async (id) => {
-  const { data } = await api.post(`/posts/${id}/like`);
-  return data.data; // { likesCount, liked }
+  const res = await api.post(`/posts/${id}/like`);
+  return res.data.data;
 };
 
+export const getComments = async (postId) => {
+  const res = await api.get(`/posts/${postId}/comments`);
+  return res.data.data;
+};
 
+export const createComment = async (postId, content) => {
+  const res = await api.post(`/posts/${postId}/comments`, { content });
+  return res.data.data;
+};

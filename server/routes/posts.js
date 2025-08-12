@@ -8,6 +8,10 @@ const {
   deletePost,
   toggleLike
 } = require('../controllers/postsController');
+const {
+  createComment,
+  getComments
+} = require('../controllers/commentsController');
 const { protect } = require('../middleware/auth');
 
 const router = express.Router();
@@ -34,5 +38,10 @@ router.route('/:id')
   .delete(protect, deletePost);
 
 router.post('/:id/like', protect, toggleLike);
+
+// Comments routes
+router.route('/:postId/comments')
+  .post(protect, createComment)
+  .get(getComments);
 
 module.exports = router;

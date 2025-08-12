@@ -84,14 +84,14 @@ NODE_ENV=development
 PORT=5000
 
 # Database Configuration
-MONGODB_URI=mongodb://localhost:27017/miniblog
+MONGODB_URI=mongodb
 
 # JWT Configuration
 JWT_SECRET=your_super_secret_jwt_key_here
 JWT_EXPIRE=7d
 
 # Admin Account (will be created automatically)
-ADMIN_EMAIL=admin@miniblog.com
+ADMIN_EMAIL=admin.miniblog@gmail.com
 ADMIN_PASSWORD=YourSecureAdminPassword123!
 
 # Email Configuration (for password reset)

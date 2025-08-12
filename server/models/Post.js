@@ -27,7 +27,15 @@ const postSchema = new mongoose.Schema({
       filename: String,
       url: String
     }
-  ]
+  ],
+  comments: [{
+    type: mongoose.Schema.ObjectId,
+    ref: 'Comment'
+  }],
+  commentsCount: {
+    type: Number,
+    default: 0
+  }
 }, {
   timestamps: true
 });
