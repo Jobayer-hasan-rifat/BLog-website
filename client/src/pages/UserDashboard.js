@@ -9,6 +9,7 @@ const UserDashboard = () => {
   const [me, setMe] = useState(null);
   const [posts, setPosts] = useState([]);
   const [saving, setSaving] = useState(false);
+  const [myEvents, setMyEvents] = useState([]);
   const [editing, setEditing] = useState(false);
 
   useEffect(() => {
@@ -17,6 +18,12 @@ const UserDashboard = () => {
       setMe(prof.data.user);
       const myPosts = await api.get('/users/me/posts');
       setPosts(myPosts.data.data);
+      try {
+        const evRes = await api.get('/events/me/history');
+        setMyEvents(evRes.data.data || []);
+      } catch (e) {
+        // ignore silently for now
+      }
     };
     load();
   }, []);
@@ -131,10 +138,30 @@ const UserDashboard = () => {
           </Link>
         ))}
       </div>
+
+      <h3 style={{ marginTop: 16 }}>Your events</h3>
+      <div className="stack card" style={{ padding: 12, background: '#f3f7ff' }}>
+        <div className="row" style={{ justifyContent: 'space-between', alignItems: 'center' }}>
+          <div style={{ fontWeight: 600 }}>History</div>
+          <Link to="/events/create" className="btn">Create Event</Link>
+        </div>
+        {myEvents.length === 0 ? (
+          <div>No events created yet.</div>
+        ) : (
+          myEvents.map((ev) => (
+            <Link key={ev._id} to={`/events/${ev._id}`} className="post card" style={{ textDecoration: 'none', color: 'inherit' }}>
+              <div className="row" style={{ alignItems: 'center', gap: 8 }}>
+                <h4 style={{ margin: 0 }}>{ev.title}</h4>
+              </div>
+              <div style={{ color: '#666' }}>{new Date(ev.date).toLocaleString()}</div>
+              {ev.location && <div>Location: {ev.location}</div>}
+            </Link>
+          ))
+        )}
+      </div>
     </div>
   );
 };
 
 export default UserDashboard;
-
 

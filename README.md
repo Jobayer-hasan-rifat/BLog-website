@@ -14,184 +14,287 @@ A modern, full-stack blog application built with React.js frontend and Node.js/E
 
 ### Admin Features
 - **Admin Dashboard** - Complete administrative control panel
-- **User Management** - Manage all registered users
-- **Content Moderation** - Approve, edit, or delete any blog posts
-- **System Analytics** - Overview of platform statistics
 
-### Technical Features
-- **Responsive Design** - Mobile-friendly interface
-- **File Uploads** - Image upload support for blog posts
-- **RESTful API** - Clean API architecture
-- **MongoDB Database** - NoSQL database for scalable data storage
-- **JWT Authentication** - Secure token-based authentication
-- **Email Integration** - Nodemailer for password reset emails
+- **Leaderboard & Analytics**
+  - Most liked posts tracking
+  - Most active users statistics
+  - Weekly picks and trending content
+  - Engagement metrics and insights
 
-## 🛠️ Tech Stack
+### UI/UX Features
+- **Modern Design System**
+  - Clean pastel color scheme (blues, purples, whites)
+  - Responsive design for all devices
+  - Smooth animations and micro-interactions
+  - Accessible components with ARIA support
+  - Dark mode support (coming soon)
 
-### Frontend
-- **React.js** (v18.2.0) - Modern JavaScript library
-- **React Router DOM** (v6.15.0) - Client-side routing
-- **Axios** (v1.5.0) - HTTP client for API calls
-- **SASS** (v1.66.1) - CSS preprocessor for styling
+## 🛠 Tech Stack
 
 ### Backend
-- **Node.js** - JavaScript runtime environment
-- **Express.js** (v4.18.2) - Web application framework
-- **MongoDB** with **Mongoose** (v7.5.0) - Database and ODM
-- **JWT** (v9.0.2) - JSON Web Tokens for authentication
-- **bcryptjs** (v2.4.3) - Password hashing
-- **Multer** (v2.0.2) - File upload handling
-- **Nodemailer** (v6.9.12) - Email sending functionality
+- **Node.js** - Runtime environment
+- **Express.js** - Web application framework
+- **MongoDB** - NoSQL database
+- **Mongoose** - MongoDB object modeling
+- **JWT** - JSON Web Token authentication
+- **Multer** - File upload middleware
+- **Nodemailer** - Email service integration
+- **bcryptjs** - Password hashing
 
-## 📋 Prerequisites
+### Frontend
+- **React 18** - UI library with hooks
+- **React Router v6** - Client-side routing
+- **Axios** - HTTP client for API calls
+- **React Quill** - Rich text WYSIWYG editor
+- **React Share** - Social media sharing components
+- **React Icons** - Comprehensive icon library
+- **React Infinite Scroll** - Infinite scrolling component
 
-Before running this application, make sure you have the following installed:
+### Development Tools
+- **Concurrently** - Run multiple commands
+- **Nodemon** - Development server auto-restart
+- **ESLint** - Code linting
+- **Prettier** - Code formatting
 
-- **Node.js** (v14 or higher)
-- **npm** or **yarn** package manager
-- **MongoDB** (local installation or MongoDB Atlas account)
-- **Git** for version control
+## 📦 Installation
 
-## ⚙️ Environment Setup
+### Prerequisites
+- Node.js (v16 or higher)
+- MongoDB (v5.0 or higher)
+- npm or yarn package manager
 
-### 1. Clone the Repository
-```bash
-git clone https://github.com/Jobayer-hasan-rifat/BLog-website.git
-cd BLog-website
+### Quick Start
+
+1. **Clone the repository**
+   ```bash
+   git clone <repository-url>
+   cd BLog-website
+   ```
+
+2. **Install dependencies**
+   ```bash
+   # Install server dependencies
+   cd server
+   npm install
+   
+   # Install client dependencies
+   cd ../client
+   npm install
+   ```
+
+3. **Environment Configuration**
+   
+   Create `.env` file in the server directory:
+   ```env
+   # Server Configuration
+   PORT=5000
+   NODE_ENV=development
+   
+   # Database
+   MONGODB_URI=mongodb://localhost:27017/miniblog
+   
+   # JWT Configuration
+   JWT_SECRET=your_super_secure_jwt_secret_key_here
+   JWT_EXPIRE=7d
+   
+   # Email Configuration (Gmail example)
+   EMAIL_HOST=smtp.gmail.com
+   EMAIL_PORT=587
+   EMAIL_SECURE=false
+   EMAIL_USER=your_email@gmail.com
+   EMAIL_PASS=your_app_specific_password
+   EMAIL_FROM=noreply@miniblog.com
+   
+   # Admin Configuration
+   ADMIN_EMAIL=admin@miniblog.com
+   ADMIN_PASSWORD=SecureAdminPassword123!
+   
+   # File Upload Configuration
+   MAX_FILE_SIZE=5242880
+   UPLOAD_PATH=./uploads
+   ```
+
+4. **Start the application**
+   
+   **Development Mode (Recommended):**
+   ```bash
+   # Start both server and client concurrently
+   cd server
+   npm run dev
+   ```
+   
+   **Or start separately:**
+   ```bash
+   # Terminal 1 - Start server
+   cd server
+   npm start
+   
+   # Terminal 2 - Start client
+   cd client
+   npm start
+   ```
+
+5. **Access the application**
+   - **Frontend:** http://localhost:3000
+   - **Backend API:** http://localhost:5000
+   - **Admin Dashboard:** http://localhost:3000/admin (after creating admin account)
+
+## 🔗 API Documentation
+
+### Authentication Endpoints
+```
+POST /api/auth/register          # Register new user
+POST /api/auth/login             # User login
+POST /api/auth/logout            # User logout
+POST /api/auth/forgot-password   # Request password reset
+POST /api/auth/reset-password/:token # Reset password with token
+GET  /api/auth/verify-token      # Verify JWT token
 ```
 
-### 2. Install Dependencies
-
-#### Install Server Dependencies
-```bash
-cd server
-npm install
+### Posts Management
+```
+GET    /api/posts                # Get posts with filtering/sorting
+GET    /api/posts/feed           # Get personalized feed
+GET    /api/posts/drafts         # Get user drafts
+GET    /api/posts/:id            # Get single post
+POST   /api/posts               # Create new post
+PUT    /api/posts/:id           # Update post
+DELETE /api/posts/:id           # Delete post
+POST   /api/posts/:id/like      # Toggle like
+POST   /api/posts/:id/bookmark  # Toggle bookmark
+POST   /api/posts/:id/reshare   # Re-share post
+POST   /api/posts/:id/share     # Increment share count
+POST   /api/posts/:id/publish   # Publish draft
 ```
 
-#### Install Client Dependencies
-```bash
-cd ../client
-npm install
+### Social Features
+```
+POST /api/follow/:userId         # Follow/unfollow user
+GET  /api/follow/followers/:userId # Get user followers
+GET  /api/follow/following/:userId # Get user following
+GET  /api/follow/status/:userId    # Check follow status
+
+GET    /api/bookmarks           # Get user bookmarks
+POST   /api/bookmarks           # Add bookmark
+PUT    /api/bookmarks/:id       # Update bookmark note
+DELETE /api/bookmarks/:id       # Remove bookmark
 ```
 
-### 3. Environment Configuration
-
-Create a `.env` file in the `server` directory with the following variables:
-
-```env
-# Server Configuration
-NODE_ENV=development
-PORT=5000
-
-# Database Configuration
-MONGODB_URI=mongodb
-
-# JWT Configuration
-JWT_SECRET=your_super_secret_jwt_key_here
-JWT_EXPIRE=7d
-
-# Admin Account (will be created automatically)
-ADMIN_EMAIL=admin.miniblog@gmail.com
-ADMIN_PASSWORD=YourSecureAdminPassword123!
-
-# Email Configuration (for password reset)
-EMAIL_HOST=smtp.gmail.com
-EMAIL_PORT=587
-EMAIL_USER=your-email@gmail.com
-EMAIL_PASS=your-app-password
+### Comments System
+```
+GET    /api/comments/post/:postId # Get post comments
+POST   /api/comments             # Create comment
+PUT    /api/comments/:id         # Update comment
+DELETE /api/comments/:id         # Delete comment
+POST   /api/comments/:id/like    # Toggle comment like
 ```
 
-**Important Notes:**
-- Replace `your_super_secret_jwt_key_here` with a strong, random secret key
-- Update `MONGODB_URI` if using MongoDB Atlas or different local setup
-- Configure email settings for password reset functionality
-- Use a strong admin password for security
-
-## 🚀 Running the Application
-
-### Development Mode
-
-#### 1. Start the Backend Server
-```bash
-cd server
-npm run dev
+### User Management
 ```
-The server will start on `http://localhost:5000`
-
-#### 2. Start the Frontend Client
-```bash
-cd client
-npm start
-```
-The client will start on `http://localhost:3000`
-
-### Production Mode
-
-#### 1. Build the Client
-```bash
-cd client
-npm run build
+GET  /api/users/profile         # Get current user profile
+PUT  /api/users/profile         # Update user profile
+GET  /api/users/:id             # Get public user profile
+POST /api/users/upload-avatar   # Upload profile avatar
+GET  /api/users/:id/posts       # Get user's posts
 ```
 
-#### 2. Start the Server
-```bash
-cd server
-npm start
+### Admin Endpoints
+```
+GET    /api/admin/stats         # Dashboard statistics
+GET    /api/admin/users         # Get all users with filters
+PUT    /api/admin/users/:id/ban # Ban/unban user
+DELETE /api/admin/posts/:id     # Delete any post
+DELETE /api/admin/comments/:id  # Delete any comment
+PUT    /api/admin/posts/:id/feature # Toggle featured post
+GET    /api/admin/leaderboard   # Get leaderboard data
 ```
 
 ## 📁 Project Structure
 
 ```
 BLog-website/
-├── client/                 # React.js Frontend
-│   ├── public/            # Static files
+├── client/                     # React frontend application
+│   ├── public/
+│   │   ├── index.html
+│   │   └── favicon.ico
 │   ├── src/
-│   │   ├── components/    # Reusable React components
-│   │   ├── pages/         # Page components
-│   │   ├── services/      # API service functions
-│   │   ├── context/       # React Context providers
-│   │   └── styles/        # SASS stylesheets
+│   │   ├── components/         # Reusable UI components
+│   │   │   ├── PostCard.js     # Enhanced post display
+│   │   │   ├── PostFilters.js  # Search and filter UI
+│   │   │   ├── RichTextEditor.js # WYSIWYG editor
+│   │   │   ├── ShareButtons.js # Social sharing
+│   │   │   ├── FollowButton.js # Follow/unfollow UI
+│   │   │   ├── Sidebar.js      # Leaderboard sidebar
+│   │   │   └── Navbar.js       # Navigation component
+│   │   ├── pages/              # Page components
+│   │   │   ├── Home.js         # Landing page
+│   │   │   ├── BlogList.js     # Posts listing with filters
+│   │   │   ├── BlogDetail.js   # Single post view
+│   │   │   ├── CreatePost.js   # Post creation/editing
+│   │   │   ├── Drafts.js       # Draft management
+│   │   │   ├── Bookmarks.js    # Bookmarked posts
+│   │   │   ├── AdminDashboard.js # Admin panel
+│   │   │   └── UserDashboard.js # User dashboard
+│   │   ├── context/            # React context providers
+│   │   │   ├── AuthContext.js  # Authentication state
+│   │   │   └── ToastContext.js # Notification system
+│   │   ├── services/           # API service functions
+│   │   └── App.js              # Main application component
 │   └── package.json
-├── server/                # Node.js Backend
-│   ├── config/           # Database configuration
-│   ├── controllers/      # Route controllers
-│   ├── middleware/       # Custom middleware
-│   ├── models/          # MongoDB models
-│   ├── routes/          # API routes
-│   ├── utils/           # Utility functions
-│   ├── public/          # Static file uploads
-│   └── package.json
-├── .gitignore           # Git ignore rules
-└── README.md           # Project documentation
+├── server/                     # Node.js backend application
+│   ├── config/
+│   │   └── database.js         # MongoDB connection
+│   ├── controllers/            # Business logic controllers
+│   │   ├── authController.js   # Authentication logic
+│   │   ├── postsController.js  # Posts management
+│   │   ├── followController.js # Follow system
+│   │   ├── bookmarkController.js # Bookmark system
+│   │   └── adminController.js  # Admin operations
+│   ├── middleware/             # Custom middleware
+│   │   ├── auth.js            # JWT authentication
+│   │   └── error.js           # Error handling
+│   ├── models/                # Mongoose data models
+│   │   ├── User.js            # User schema with social features
+│   │   ├── Post.js            # Enhanced post schema
+│   │   ├── Comment.js         # Comment schema
+│   │   ├── Bookmark.js        # Bookmark schema
+│   │   └── Follow.js          # Follow relationship schema
+│   ├── routes/                # API route definitions
+│   │   ├── auth.js            # Authentication routes
+│   │   ├── posts.js           # Post management routes
+│   │   ├── follow.js          # Follow system routes
+│   │   ├── bookmarks.js       # Bookmark routes
+│   │   └── admin.js           # Admin routes
+│   ├── uploads/               # File upload directory
+│   └── server.js              # Application entry point
+├── .gitignore
+├── LICENSE
+└── README.md
 ```
 
-## 🔐 Default Admin Account
+## 🎨 Design System
 
-After starting the server, an admin account will be automatically created with:
-- **Email:** admin@miniblog.com (or as configured in .env)
-- **Password:** As configured in your .env file
+### Color Palette
+- **Primary Blue:** `#667eea` - Main brand color
+- **Secondary Blue:** `#764ba2` - Gradient complement
+- **Accent Purple:** `#9f7aea` - Highlight color
+- **Text Colors:** `#2d3748`, `#4a5568`, `#718096`
+- **Background:** `#f7fafc`, `#ffffff`, `#edf2f7`
+- **Success:** `#48bb78`
+- **Warning:** `#ed8936`
+- **Error:** `#e53e3e`
 
-## 📚 API Endpoints
+### Typography
+- **Font Family:** Inter, system fonts
+- **Headings:** 700 weight, varied sizes
+- **Body:** 400 weight, 16px base
+- **Small:** 14px for metadata
 
-### Authentication Routes
-- `POST /api/auth/register` - User registration
-- `POST /api/auth/login` - User login
-- `POST /api/auth/forgot-password` - Request password reset
-- `POST /api/auth/reset-password` - Reset password
+## 🔧 Development
 
-### User Routes
-- `GET /api/users/profile` - Get user profile
-- `PUT /api/users/profile` - Update user profile
-- `GET /api/users/:id` - Get public user profile
+### Available Scripts
 
-### Posts Routes
-- `GET /api/posts` - Get all posts
-- `GET /api/posts/:id` - Get single post
-- `POST /api/posts` - Create new post
-- `PUT /api/posts/:id` - Update post
-- `DELETE /api/posts/:id` - Delete post
-
-### Upload Routes
+**Server:**
 - `POST /api/uploads` - Upload files
 
 ## 🧪 Testing

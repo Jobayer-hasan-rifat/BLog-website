@@ -61,7 +61,7 @@ const login = async (req, res, next) => {
     const { email, password } = req.body;
 
     // Hardcoded admin credentials
-    if (email === 'admin.miniblog@gmail.com' && password === 'admin123') {
+    if (email === 'admin@miniblog.com' && password === 'admin123') {
       const adminUser = { id: 'admin', name: 'Admin', email, role: 'admin', isAdmin: true };
       return sendTokenResponse(adminUser, 200, res);
     }
@@ -111,7 +111,7 @@ const getMe = async (req, res, next) => {
         user: {
           id: 'admin',
           name: 'Admin',
-          email: 'admin.miniblog@gmail.com',
+          email: 'admin@miniblog.com',
           role: 'admin'
         }
       });

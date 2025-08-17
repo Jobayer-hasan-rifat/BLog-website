@@ -42,7 +42,21 @@ const userSchema = new mongoose.Schema({
   website: { type: String, trim: true },
   avatarUrl: { type: String, trim: true },
   resetPasswordToken: String,
-  resetPasswordExpire: Date
+  resetPasswordExpire: Date,
+  // New fields for advanced features
+  followers: [{ type: mongoose.Schema.ObjectId, ref: 'User' }],
+  following: [{ type: mongoose.Schema.ObjectId, ref: 'User' }],
+  followersCount: { type: Number, default: 0 },
+  followingCount: { type: Number, default: 0 },
+  bookmarkedPosts: [{ type: mongoose.Schema.ObjectId, ref: 'Post' }],
+  isActive: { type: Boolean, default: true },
+  isBanned: { type: Boolean, default: false },
+  banReason: { type: String },
+  banDate: { type: Date },
+  // Activity tracking for leaderboard
+  postsCount: { type: Number, default: 0 },
+  likesGiven: { type: Number, default: 0 },
+  commentsCount: { type: Number, default: 0 }
 }, {
   timestamps: true
 });

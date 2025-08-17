@@ -22,12 +22,48 @@ const protect = async (req, res, next) => {
     // Verify token
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
-    // If admin token, synthesize admin user without DB
+    // If admin token, try to map to real admin user to ensure valid ObjectId
     if (decoded.isAdmin) {
+      const adminEmail = process.env.ADMIN_EMAIL || 'admin@miniblog.com';
+      let adminUser = null;
+
+      if (decoded.id) {
+        adminUser = await User.findById(decoded.id).catch(() => null);
+      }
+      if (!adminUser) {
+        adminUser = await User.findOne({ email: adminEmail, role: 'admin' });
+      }
+
+      // If still not found, auto-create admin DB user so downstream code has a valid ObjectId
+      if (!adminUser) {
+        try {
+          adminUser = await User.create({
+            name: 'Admin',
+            email: adminEmail,
+            password: process.env.ADMIN_PASSWORD || 'admin123',
+            role: 'admin'
+          });
+        } catch (e) {
+          // If a race created it, fetch again
+          adminUser = await User.findOne({ email: adminEmail, role: 'admin' });
+        }
+      }
+
+      if (adminUser) {
+        req.user = {
+          id: adminUser._id.toString(),
+          name: adminUser.name,
+          email: adminUser.email,
+          role: adminUser.role
+        };
+        return next();
+      }
+
+      // Fallback to synthetic admin if no DB user is found
       req.user = {
         id: 'admin',
         name: 'Admin',
-        email: 'admin.miniblog@gmail.com',
+        email: 'admin@miniblog.com',
         role: 'admin'
       };
       return next();

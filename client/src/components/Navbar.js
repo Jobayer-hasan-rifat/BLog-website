@@ -1,10 +1,12 @@
 import React, { useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
+import { DraftsContext } from '../context/DraftsContext';
 import '../styles/Navbar.css';
 
 const Navbar = () => {
   const { user, logout } = useContext(AuthContext);
+  const { drafts } = useContext(DraftsContext);
   const navigate = useNavigate();
 
   const handleLogout = async () => {
@@ -18,9 +20,16 @@ const Navbar = () => {
         <Link to="/" className="nav__brand">MiniBlog</Link>
         <div className="nav__links">
           <Link to="/" className="nav__link">Home</Link>
+          {user && <Link to="/events" className="nav__link">Events</Link>}
           {user && (
             <>
-              <Link to="/create" className="nav__link">Create</Link>
+              <Link to="/events/create" className="nav__link">Create Event</Link>
+              {user.role !== 'admin' && (
+                <>
+                  <Link to="/drafts" className="nav__link">Drafts {drafts.length > 0 && `(${drafts.length})`}</Link>
+                  <Link to="/bookmarks" className="nav__link">Bookmarks</Link>
+                </>
+              )}
               {user.role === 'admin' ? (
                 <Link to="/admin" className="nav__link">Admin</Link>
               ) : (
@@ -42,5 +51,3 @@ const Navbar = () => {
 };
 
 export default Navbar;
-
-

@@ -2,13 +2,19 @@ import React, { useEffect, useContext } from 'react';
 import { Routes, Route, Navigate, useNavigate } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Home from './pages/Home';
+import BlogList from './pages/BlogList';
 import BlogDetail from './pages/BlogDetail';
+import Events from './pages/Events';
+import EventDetail from './pages/EventDetail';
+import CreateEvent from './pages/CreateEvent';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import UserDashboard from './pages/UserDashboard';
 import AdminDashboard from './pages/AdminDashboard';
-import CreatePost from './pages/CreatePost';
+import Drafts from './pages/Drafts';
+import Bookmarks from './pages/Bookmarks';
 import { AuthProvider, AuthContext } from './context/AuthContext';
+import { DraftsProvider } from './context/DraftsContext';
 import { ToastProvider } from './context/ToastContext';
 import ForgotPassword from './pages/ForgotPassword';
 import ResetPassword from './pages/ResetPassword';
@@ -43,7 +49,18 @@ const AppRoutes = () => {
       <div className="App__content">
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/posts" element={<BlogList />} />
           <Route path="/posts/:id" element={<BlogDetail />} />
+          <Route path="/events" element={<Events />} />
+          <Route path="/events/:id" element={<EventDetail />} />
+          <Route
+            path="/events/create"
+            element={
+              <ProtectedRoute roles={["user", "admin"]}>
+                <CreateEvent />
+              </ProtectedRoute>
+            }
+          />
           <Route path="/users/:id" element={<UserPublicProfile />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
@@ -74,10 +91,18 @@ const AppRoutes = () => {
             }
           />
           <Route
-            path="/create"
+            path="/drafts"
             element={
               <ProtectedRoute roles={["user", "admin"]}>
-                <CreatePost />
+                <Drafts />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/bookmarks"
+            element={
+              <ProtectedRoute roles={["user", "admin"]}>
+                <Bookmarks />
               </ProtectedRoute>
             }
           />
@@ -92,7 +117,9 @@ export default function App() {
   return (
     <AuthProvider>
       <ToastProvider>
-        <AppRoutes />
+        <DraftsProvider>
+          <AppRoutes />
+        </DraftsProvider>
       </ToastProvider>
     </AuthProvider>
   );
