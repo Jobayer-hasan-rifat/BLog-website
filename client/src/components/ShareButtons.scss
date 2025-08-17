@@ -1,0 +1,106 @@
+.share-buttons {
+  background: linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%);
+  padding: 20px;
+  border-radius: 12px;
+  margin: 20px 0;
+  border: 1px solid #e2e8f0;
+
+  .share-section {
+    margin-bottom: 20px;
+
+    .share-title {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 16px;
+      font-weight: 600;
+      color: #2d3748;
+      margin-bottom: 12px;
+
+      svg {
+        color: #667eea;
+      }
+    }
+
+    .social-buttons {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+
+      button {
+        transition: transform 0.2s ease;
+
+        &:hover {
+          transform: translateY(-2px);
+        }
+      }
+    }
+  }
+
+  .action-buttons {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+
+    .action-btn {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 16px;
+      border: 2px solid #e2e8f0;
+      border-radius: 8px;
+      background: white;
+      color: #4a5568;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s ease;
+
+      &:hover {
+        border-color: #cbd5e0;
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      }
+
+      svg {
+        font-size: 16px;
+      }
+
+      &.bookmark-btn {
+        &:hover {
+          border-color: #f6ad55;
+          color: #f6ad55;
+        }
+
+        &.bookmarked {
+          border-color: #f6ad55;
+          background: #fffaf0;
+          color: #f6ad55;
+
+          svg {
+            fill: currentColor;
+          }
+        }
+      }
+
+      &.reshare-btn {
+        &:hover {
+          border-color: #48bb78;
+          color: #48bb78;
+        }
+      }
+    }
+  }
+
+  @media (max-width: 768px) {
+    padding: 16px;
+
+    .action-buttons {
+      .action-btn {
+        flex: 1;
+        justify-content: center;
+        min-width: 120px;
+      }
+    }
+  }
+}

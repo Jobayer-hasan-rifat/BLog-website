@@ -1,4 +1,5 @@
 const express = require('express');
+const path = require('path');
 const dotenv = require('dotenv');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
@@ -13,10 +14,6 @@ connectDB();
 
 const app = express();
 
-// Body parser
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
-
 // Cookie parser
 app.use(cookieParser());
 
@@ -26,20 +23,33 @@ app.use(cors({
   credentials: true
 }));
 
-// Static folder
+// Body parser - must be before routes so JSON bodies are parsed
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+
+// Static folders
 app.use(express.static('public'));
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // Route files
 const auth = require('./routes/auth');
 const posts = require('./routes/posts');
 const users = require('./routes/users');
 const uploads = require('./routes/uploads');
+const follow = require('./routes/follow');
+const bookmarks = require('./routes/bookmarks');
+const admin = require('./routes/admin');
+const events = require('./routes/events');
 
 // Mount routers
 app.use('/api/auth', auth);
 app.use('/api/posts', posts);
 app.use('/api/users', users);
 app.use('/api/uploads', uploads);
+app.use('/api/follow', follow);
+app.use('/api/bookmarks', bookmarks);
+app.use('/api/admin', admin);
+app.use('/api/events', events);
 
 // Error handler
 app.use(errorHandler);

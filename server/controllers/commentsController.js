@@ -6,7 +6,7 @@ const Post = require('../models/Post');
 // @access  Private
 const createComment = async (req, res, next) => {
   try {
-    const { content } = req.body;
+    const { content, parentComment } = req.body;
     const { postId } = req.params;
 
     const post = await Post.findById(postId);
@@ -15,15 +15,18 @@ const createComment = async (req, res, next) => {
       return res.status(404).json({ success: false, message: 'Post not found' });
     }
 
-    const comment = await Comment.create({
+    let comment = await Comment.create({
       content,
       author: req.user.id,
-      post: postId
+      post: postId,
+      parentComment: parentComment || null
     });
 
     post.comments.push(comment._id);
     post.commentsCount = (post.commentsCount || 0) + 1;
     await post.save();
+
+    comment = await comment.populate('author', 'name avatarUrl');
 
     res.status(201).json({ success: true, data: comment });
   } catch (error) {
@@ -37,9 +40,64 @@ const createComment = async (req, res, next) => {
 const getComments = async (req, res, next) => {
   try {
     const { postId } = req.params;
-    const comments = await Comment.find({ post: postId }).sort({ createdAt: -1 });
+    const allComments = await Comment.find({ post: postId })
+      .populate('author', 'name avatarUrl')
+      .sort({ createdAt: 'asc' });
 
-    res.status(200).json({ success: true, count: comments.length, data: comments });
+    const commentMap = {};
+    const nestedComments = [];
+
+    allComments.forEach(comment => {
+      const commentObj = comment.toObject();
+      commentObj.replies = [];
+      commentMap[commentObj._id] = commentObj;
+    });
+
+    allComments.forEach(comment => {
+      if (comment.parentComment) {
+        if (commentMap[comment.parentComment]) {
+          commentMap[comment.parentComment].replies.push(commentMap[comment._id]);
+        }
+      } else {
+        nestedComments.push(commentMap[comment._id]);
+      }
+    });
+
+    res.status(200).json({ success: true, count: nestedComments.length, data: nestedComments });
+  } catch (error) {
+    next(error);
+  }
+};
+
+// @desc    Like/unlike a comment
+// @route   POST /api/posts/:postId/comments/:commentId/like
+// @access  Private
+const toggleCommentLike = async (req, res, next) => {
+  try {
+    const { commentId } = req.params;
+    const userId = req.user.id;
+
+    const comment = await Comment.findById(commentId);
+
+    if (!comment) {
+      return res.status(404).json({ success: false, message: 'Comment not found' });
+    }
+
+    const isLiked = comment.likedBy.includes(userId);
+
+    if (isLiked) {
+      // Unlike
+      comment.likedBy = comment.likedBy.filter(id => id.toString() !== userId);
+      comment.likesCount = (comment.likesCount || 1) - 1;
+    } else {
+      // Like
+      comment.likedBy.push(userId);
+      comment.likesCount = (comment.likesCount || 0) + 1;
+    }
+
+    await comment.save();
+
+    res.status(200).json({ success: true, data: comment });
   } catch (error) {
     next(error);
   }
@@ -47,5 +105,6 @@ const getComments = async (req, res, next) => {
 
 module.exports = {
   createComment,
-  getComments
+  getComments,
+  toggleCommentLike
 };

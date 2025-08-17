@@ -16,6 +16,18 @@ const commentSchema = new mongoose.Schema({
     type: mongoose.Schema.ObjectId,
     ref: 'Post',
     required: true
+  },
+  // For comment likes
+  likesCount: {
+    type: Number,
+    default: 0
+  },
+  likedBy: [{ type: mongoose.Schema.ObjectId, ref: 'User' }],
+  // For comment replies
+  parentComment: {
+    type: mongoose.Schema.ObjectId,
+    ref: 'Comment',
+    default: null
   }
 }, {
   timestamps: true

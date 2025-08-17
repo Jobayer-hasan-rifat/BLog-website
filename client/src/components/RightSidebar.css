@@ -1,0 +1,20 @@
+.right-sidebar {
+  width: 280px;
+  padding: 20px;
+  color: var(--text-primary);
+  background-color: #e6e6fa;
+  border-left: 1px solid var(--border-light);
+}
+
+.sidebar-section {
+  margin-bottom: 20px;
+}
+
+.sidebar-section h4 {
+  color: var(--text-secondary);
+  margin-bottom: 10px;
+  font-size: 14px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}

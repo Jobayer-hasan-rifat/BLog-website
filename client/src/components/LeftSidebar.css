@@ -1,0 +1,87 @@
+.left-sidebar {
+  width: 280px;
+  padding: 20px;
+  background-color: #add8e6;
+  border-right: 1px solid var(--border-light);
+  color: var(--text-primary);
+}
+
+.sidebar-profile {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 24px;
+  font-weight: 600;
+  font-size: 16px;
+}
+
+.people-suggestions {
+  margin-top: 20px;
+}
+
+.people-suggestions h4 {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  margin-bottom: 16px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.people-suggestions ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.suggestion-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+  padding: 8px;
+  border-radius: 6px;
+  transition: background-color 0.2s ease;
+}
+
+.suggestion-item:hover {
+    background-color: var(--background-tertiary);
+}
+
+.suggestion-item span {
+    font-weight: 500;
+}
+
+.suggestion-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.btn-connect,
+.btn-remove {
+  border: none;
+  padding: 4px 8px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 600;
+  transition: background-color 0.2s ease;
+}
+
+.btn-connect {
+  background-color: var(--primary-blue);
+  color: white;
+}
+
+.btn-connect:hover {
+  opacity: 0.9;
+}
+
+.btn-remove {
+  background-color: transparent;
+  color: var(--text-muted);
+}
+
+.btn-remove:hover {
+  background-color: var(--border-light);
+}
