@@ -1,7 +1,0 @@
-.toast__container { position: fixed; top: 16px; right: 16px; display: grid; gap: 8px; z-index: 1100; }
-.toast { background: #111827; color: #fff; padding: 10px 14px; border-radius: 10px; box-shadow: 0 10px 20px rgba(0,0,0,0.2); }
-.toast--success { background: #166534; }
-.toast--error { background: #991b1b; }
-.toast--info { background: #1f2937; }
-
-

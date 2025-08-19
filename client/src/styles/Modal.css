@@ -1,4 +1,0 @@
-.modal__backdrop { position: fixed; inset: 0; background: rgba(0,0,0,0.35); display: grid; place-items: center; z-index: 1000; }
-.modal__content { background: #fff; border-radius: 14px; padding: 16px; width: min(480px, 90vw); box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
-
-
